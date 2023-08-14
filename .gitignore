@@ -1,0 +1,5 @@
+node_modules
+.DS_Store/
+criteria.md
+package-lock.json
+reference_screenshots
