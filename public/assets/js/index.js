@@ -4,6 +4,7 @@ let saveNoteBtn;
 let newNoteBtn;
 let noteList;
 
+// If we're in the /notes URL, assign the variables to these elements
 if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
   noteText = document.querySelector('.note-textarea');
@@ -25,6 +26,7 @@ const hide = (elem) => {
 // activeNote is used to keep track of the note in the textarea
 let activeNote = {};
 
+// Make a get request to the /api/notes resource
 const getNotes = () =>
   fetch('/api/notes', {
     method: 'GET',
@@ -33,6 +35,7 @@ const getNotes = () =>
     },
   });
 
+// Make a post request to the /api/notes resource with the note object
 const saveNote = (note) =>
   fetch('/api/notes', {
     method: 'POST',
@@ -42,6 +45,7 @@ const saveNote = (note) =>
     body: JSON.stringify(note),
   });
 
+// Make a delete request to the /api/notes resource with a specific id to be deleted
 const deleteNote = (id) =>
   fetch(`/api/notes/${id}`, {
     method: 'DELETE',
@@ -53,12 +57,14 @@ const deleteNote = (id) =>
 const renderActiveNote = () => {
   hide(saveNoteBtn);
 
+  // If it has an id (meaning it already exists?) It should be read only, populate the fields appropriate;y
   if (activeNote.id) {
     noteTitle.setAttribute('readonly', true);
     noteText.setAttribute('readonly', true);
     noteTitle.value = activeNote.title;
     noteText.value = activeNote.text;
   } else {
+    // Otherwise, make a blank note and make it editable
     noteTitle.removeAttribute('readonly');
     noteText.removeAttribute('readonly');
     noteTitle.value = '';
@@ -66,12 +72,15 @@ const renderActiveNote = () => {
   }
 };
 
+// Make a newNote object taking the title and text from the fields
 const handleNoteSave = () => {
   const newNote = {
     title: noteTitle.value,
     text: noteText.value,
   };
+  // Push the note to /api/notes
   saveNote(newNote).then(() => {
+    // When that's done, get and render notes, including active note
     getAndRenderNotes();
     renderActiveNote();
   });
