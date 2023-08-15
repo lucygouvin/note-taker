@@ -1,3 +1,4 @@
+// Copied from Module 11 Activity 21
 const fs = require('fs');
 const util = require('util');
 

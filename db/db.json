@@ -1,10 +1,5 @@
 [
     {
-        "title": "Mail check",
-        "text": "To contractor for July",
-        "id": "cf83"
-    },
-    {
         "title": "Send email",
         "text": "Schedule meeting with accountant",
         "id": "abf1"
@@ -13,5 +8,10 @@
         "title": "Inventory product",
         "text": "For updated monthly numbers",
         "id": "9a36"
+    },
+    {
+        "title": "Mail cheque",
+        "text": "Send to contractor for July invoice",
+        "id": "1dcb"
     }
 ]
