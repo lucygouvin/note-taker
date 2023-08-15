@@ -57,14 +57,14 @@ const deleteNote = (id) =>
 const renderActiveNote = () => {
   hide(saveNoteBtn);
 
-  // If it has an id (meaning it already exists?) It should be read only, populate the fields appropriate;y
+  // If the active note already has an id, it's been saved, so it should not be editable. Populate title and text fields from saved values.
   if (activeNote.id) {
     noteTitle.setAttribute('readonly', true);
     noteText.setAttribute('readonly', true);
     noteTitle.value = activeNote.title;
     noteText.value = activeNote.text;
   } else {
-    // Otherwise, make a blank note and make it editable
+    // Otherwise, make a new note.
     noteTitle.removeAttribute('readonly');
     noteText.removeAttribute('readonly');
     noteTitle.value = '';
@@ -78,9 +78,9 @@ const handleNoteSave = () => {
     title: noteTitle.value,
     text: noteText.value,
   };
-  // Push the note to /api/notes
+  // Triggers a POST request to /api/notes, which will save it to db.json
   saveNote(newNote).then(() => {
-    // When that's done, get and render notes, including active note
+    // When that's done, get and render the now-updated notes list, including active note
     getAndRenderNotes();
     renderActiveNote();
   });
@@ -92,13 +92,17 @@ const handleNoteDelete = (e) => {
   e.stopPropagation();
 
   const note = e.target;
+  // Get the note's id from the data-note attribute
   const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
 
+  // If the deleted note is the active note, clear out the activeNote object
   if (activeNote.id === noteId) {
     activeNote = {};
   }
 
+  // Triggers a DELETE request to /api/notes, with the note's id as a payload
   deleteNote(noteId).then(() => {
+    // Once the deletion is done, get and render the now-updated notes list, including the active note
     getAndRenderNotes();
     renderActiveNote();
   });
@@ -117,6 +121,7 @@ const handleNewNoteView = (e) => {
   renderActiveNote();
 };
 
+// Only show the save button if both the title and text fields have a non-whitespace value
 const handleRenderSaveBtn = () => {
   if (!noteTitle.value.trim() || !noteText.value.trim()) {
     hide(saveNoteBtn);
@@ -162,7 +167,7 @@ const renderNoteList = async (notes) => {
 
     return liEl;
   };
-
+// Present message to user if there are no saved notes
   if (jsonNotes.length === 0) {
     noteListItems.push(createLi('No saved Notes', false));
   }
@@ -182,6 +187,7 @@ const renderNoteList = async (notes) => {
 // Gets notes from the db and renders them to the sidebar
 const getAndRenderNotes = () => getNotes().then(renderNoteList);
 
+// Assign event listeners to buttons if we're on the /notes page
 if (window.location.pathname === '/notes') {
   saveNoteBtn.addEventListener('click', handleNoteSave);
   newNoteBtn.addEventListener('click', handleNewNoteView);
