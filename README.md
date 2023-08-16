@@ -6,7 +6,7 @@ This app allows the user to make and save notes. Previously saved notes appear o
 
 ## Installation
 
-The app is deployed on Heroku here:
+The app is deployed on Heroku here: https://shielded-garden-90964-33d2fc836739.herokuapp.com/
 
 ## Usage
 
